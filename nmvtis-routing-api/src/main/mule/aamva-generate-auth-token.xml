@@ -22,6 +22,6 @@ http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oa
 				<set-variable value='#["Bearer " ++ payload.encValue]' doc:name="Set Variable" doc:id="3c14f7a7-49f2-4998-a4ba-bdfe9444d991" variableName="bearerToken"/>
 			</otherwise>
 		</choice>
-		<logger level="INFO" doc:name="Logger" doc:id="0ed362ca-c611-4ff3-8a67-7eab9301f577" message="#[vars.bearerToken]" category="AAMVA auth token..."/>
+		<logger level="INFO" doc:name="Logger" doc:id="0ed362ca-c611-4ff3-8a67-7eab9301f577" message="#[vars.bearerToken]" category="AAMVA auth token"/>
 	</sub-flow>
 </mule>
