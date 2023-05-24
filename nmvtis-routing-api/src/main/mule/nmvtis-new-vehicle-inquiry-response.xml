@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	
+	<sub-flow name="new-vehicle-inquiry-response-subflow" doc:id="a7e1ddb7-d091-4129-9110-f17216d45dd2" >
+		<logger level="INFO" doc:name="log-authHeader" doc:id="22e74b83-e033-445f-9e57-c33e5d354386" message="Logging Authorization header temporarily #[attributes.headers.Authorization]" />
+		<http:request method="#[attributes.method]" doc:name="post-response-papi" doc:id="2f450a3b-4c83-4dab-b279-07baaed14ed6" config-ref="New_Vechicle_Inquiry_PAPI" path="${aamva-response.new-vehicle-inquiry-response.path}">
+            <http:headers ><![CDATA[#[output application/java
+---
+{
+	"ackToken" : attributes.headers.ackToken,
+	"Authorization" : attributes.headers.Authorization
+}]]]></http:headers>
+			<http:response-validator>
+                <http:success-status-code-validator values="200..500" />
+            </http:response-validator>
+        </http:request>
+		<ee:transform doc:name="Transform Message" doc:id="3d278c56-7ce1-44b5-8d03-2e264b6a675e">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+            <ee:variables>
+                <ee:set-variable variableName="httpStatus"><![CDATA[attributes.statusCode]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+
+	</sub-flow>
+	</mule>

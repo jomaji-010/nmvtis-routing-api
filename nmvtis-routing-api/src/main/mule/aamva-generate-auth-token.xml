@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd">
+	<sub-flow name="aamva-generate-auth-token-flow" doc:id="d8710f41-caab-452e-a03d-f26e39de8fa0" >
+		<os:retrieve doc:name="Retrieve Oauth Bearer Token" doc:id="c99f6caf-92db-4e0a-bbd7-610f24329ab6" key="authToken" objectStore="Object_store">
+			<os:default-value ><![CDATA[#[""]]]></os:default-value>
+		</os:retrieve>
+		<choice doc:name="Choice" doc:id="ac490076-ba07-43d5-8bd5-b9927c3d2bc4">
+			<when expression="#[isEmpty(payload)]">
+				<http:request method="GET" doc:name="Request token" doc:id="03d8aa4c-65e3-4bec-9f21-52ebd6a867f2" path="${aamva.authenticate.path}" config-ref="HTTPS_AAMVA_Authenticate_Request">
+				</http:request>
+				<os:store doc:name="Store Token " doc:id="c3d5fc24-f473-4929-8a6d-11c856d38346" key="authToken" objectStore="Object_store">
+				</os:store>
+				<set-variable value='#["Bearer " ++ payload.encValue]' doc:name="Set Bearer Access Token " doc:id="0ce37906-1286-45b3-a2cd-4d982161a309" variableName="bearerToken" />
+			</when>
+			<otherwise>
+				<set-variable value='#["Bearer " ++ payload.encValue]' doc:name="Set Variable" doc:id="3c14f7a7-49f2-4998-a4ba-bdfe9444d991" variableName="bearerToken"/>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="0ed362ca-c611-4ff3-8a67-7eab9301f577" message="#[vars.bearerToken]" category="AAMVA auth token..."/>
+	</sub-flow>
+</mule>

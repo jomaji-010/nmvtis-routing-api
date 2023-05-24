@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="brand-inquiry-request-subflow" doc:id="f30ce65a-24e9-41e3-83b7-1085c2a60239" >
+		<set-variable value="#[attributes.headers.Authorization]" doc:name="var-authorization" doc:id="b1cb0655-2de9-4b99-95e4-795c6278dd63" variableName="Authorization" />
+		<http:request method="POST" doc:name="call-aamva" doc:id="8941f9da-4684-428f-ab75-7ccf958e6675" config-ref="HTTP_AAMVA_Request_Configuration" path="${aamva-request.nmvtis.brand-inquiry-path}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Authorization" : vars.Authorization
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="response" doc:id="103f6490-ebe8-435d-86da-993e915d1aff" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

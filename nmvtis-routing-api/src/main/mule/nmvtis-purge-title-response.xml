@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	
+	<sub-flow name="purge-title-response-subflow" doc:id="4ac77946-bc6f-4529-84e4-32182d61588f" >
+		<logger level="INFO" doc:name="log-authHeader" doc:id="0fe5f49d-be0c-410d-9f35-7bd1417aa72e" message="Logging Authorization header temporarily #[attributes.headers.Authorization]" />
+		<http:request method="#[attributes.method]" doc:name="post-response-papi" doc:id="92df29c9-4c3e-4b76-ba72-edbf42fdd39e" config-ref="Purge-Title-papi" path="${aamva-response.purge-title-response.path}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"ackToken" : attributes.headers.ackToken,
+	"Authorization" : attributes.headers.Authorization
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="9b3167df-e7c6-4a8a-ac15-c97d739f7024" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="httpStatus" ><![CDATA[attributes.statusCode]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+</mule>

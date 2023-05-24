@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="undo-change-jurisdiction-of-title-response-subflow" doc:id="c8b0c92b-cc1e-4941-9824-1e960c924ab0" >
+		<logger level="INFO" doc:name="log-authHeader" doc:id="5ad4d7c3-6003-4c9b-992f-657bbcfdf306" message="Logging Authorization header temporarily #[attributes.headers.Authorization]" />
+		<http:request method="#[attributes.method]" doc:name="post-unsolicited-undo-csot-request-papi" doc:id="ac76ddbb-6eec-41e8-8d76-980ecad3da41" config-ref="Undo_Change_SOT_PAPI" path="${aamva-response.undo-change-jurisdiction-of-title-response.path}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"ackToken" : attributes.headers.ackToken,
+	"Authorization" : attributes.headers.Authorization
+}]]]></http:headers>
+			<http:response-validator >
+				<http:success-status-code-validator values="200..500" />
+			</http:response-validator>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="22b93985-7edc-4d75-b4a4-2554db92653e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="httpStatus" ><![CDATA[attributes.statusCode]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+</mule>

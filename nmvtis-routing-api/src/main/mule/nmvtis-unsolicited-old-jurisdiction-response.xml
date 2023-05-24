@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="unsolicited-old-jurisdiction-response-subflow" doc:id="01ad76fa-acd5-4e2a-b85c-eed1268024fa" >
+		<set-variable value="#[attributes.headers.Authorization]" doc:name="var-authorization" doc:id="454a125d-268c-48ff-87e4-232c27458c2c" variableName="Authorization" />
+		<http:request method="POST" doc:name="call-aamva" doc:id="4808ddf4-88b1-4ff1-bafe-badfb3887828" config-ref="HTTP_AAMVA_Request_Configuration" path="${aamva-request.nmvtis.unsolicited-old-jurisdiction-path}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Authorization" : vars.Authorization
+}]]]></http:headers>
+		</http:request>
+		<ee:transform doc:name="response" doc:id="f0ac897e-e89e-4110-851b-ef8f090564e5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "Success"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="change-jurisdiction-of-title-oldVehicle-response-subflow" doc:id="47378bda-613a-4703-9a73-733e9de882ff" >
+		<logger level="INFO" doc:name="log-authHeader" doc:id="956f04c8-9ea8-4519-9c6d-a2411265ceb6" message="Logging Authorization header temporarily #[attributes.headers.Authorization]" />
+		<http:request method="#[attributes.method]" doc:name="post-response-papi" doc:id="46636501-b006-46da-873d-c84b6f0544d2" config-ref="Change_SOT_PAPI" path="${aamva-response.change-jurisdiction-of-title-response.oldVehicle-path}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"ackToken" : attributes.headers.ackToken,
+	"Authorization" : attributes.headers.Authorization
+}]]]></http:headers>
+			<http:response-validator >
+				<http:success-status-code-validator values="200..500" />
+			</http:response-validator>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="77ef8dd3-aef9-40f4-ad30-80e805eb5a84" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="httpStatus" ><![CDATA[attributes.statusCode]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+	</sub-flow>
+</mule>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="api-main">
+        <http:listener config-ref="api-httpListenerConfig" path="${http-listener.path}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="api-config" />
+        <error-handler ref="global-commonError_Handler" />
+        <!-- <error-handler>
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+{message: "Bad request"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+{message: "Method not allowed"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">405</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+{message: "Not acceptable"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+{message: "Unsupported media type"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">415</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+{message: "Not Implemented"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">501</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler> -->
+    </flow>
+    <flow name="api-console">
+        <http:listener config-ref="api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="api-config" />
+        <error-handler>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform>
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+    <flow name="post:\v1\NewVehicleInquiry:api-config">
+        <logger level="INFO" doc:name="log-request-to-aamva" doc:id="ab607d71-815e-475f-a290-cf5424303c04" message="Request to AAMVA for New Vehicle Inquiry: #[payload]" />
+        <flow-ref doc:name="new-vehicle-inquiry-request-subflow" doc:id="6f983aa1-4748-4188-9534-26618b8cead4" name="new-vehicle-inquiry-request-subflow" />
+    </flow>
+    <flow name="get:\v3-1\Swagger:api-config" doc:id="cf1d1085-9443-4a78-986a-3f2e002140f3">
+        <http:request method="GET" doc:name="Request" doc:id="0dffbc88-7049-4162-a96d-ba0d15e15103" config-ref="HTTP_Request_configuration1" path="/swagger/index.html" />
+        <logger level="INFO" doc:name="Logger" doc:id="04377b7b-65ec-4ab0-98f6-86fa5768648c" message="Successfully Processed" />
+    </flow>
+    <flow name="get:\v3-1\Swagger-Jurisdiction:api-config" doc:id="03de5445-d8ac-4834-bbdd-38a1ea4c1392">
+        <http:request method="GET" doc:name="Request" doc:id="ce59c16c-dd5e-4493-ba6e-2e14424748f5" config-ref="HTTP_Request_configuration2" path="/swagger/index.html" />
+        <logger level="INFO" doc:name="Logger" doc:id="f0fab855-1f8d-4895-a8ba-0d267f6fe296" message="Successfully Processed" />
+    </flow>
+    <flow name="post:\v1\NewVehicleInquiryResponse:api-config">
+        <logger level="INFO" doc:name="log-response-from-aamva" doc:id="345f88ec-2491-4b32-a37b-b3d15a0561b0" message="Response from AAMVA for New Vehicle Inquiry: #[payload]" />
+        <flow-ref doc:name="new-vehicle-inquiry-response-subflow" doc:id="c07d5712-7c77-4f3c-9af0-61abcd1fe58e" name="new-vehicle-inquiry-response-subflow" />
+    </flow>
+    <flow name="post:\v1\UsedVehicleInquiry:api-config">
+        <logger level="INFO" message="Request to AAMVA for Used Vehicle Inquiry: #[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="used-vehicle-inquiry-request-subflow" doc:id="34e4bf37-b0d4-4e1e-b075-2fac3cdb350c" name="used-vehicle-inquiry-request-subflow" />
+    </flow>
+    <flow name="post:\v1\UsedVehicleInquiryResponse:api-config">
+        <logger level="INFO" message="Response from AAMVA for Used Vehicle Inquiry: #[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="used-vehicle-inquiry-response-subflow" doc:id="d24f58b7-fd52-42e4-b1cc-81b3fe70f11c" name="used-vehicle-inquiry-response-subflow" />
+    </flow>
+    <flow name="post:\v1\StateVehicleDataResponse:api-config">
+        <logger level="INFO" message="Response to AAMVA for Unsolicited Used Vehicle Inquiry: #[payload]" />
+        <flow-ref doc:name="unsolicited-vehicle-inquiry-response-subflow" doc:id="f42159ab-b3a9-4551-b91f-c39e6a2cec3b" name="unsolicited-vehicle-inquiry-response-subflow" />
+    </flow>
+    <flow name="post:\v1\StateVehicleDataRequest:api-config">
+        <logger level="INFO" message="Request from AAMVA for Unsolicited Used Vehicle Inquiry: #[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="Flow Reference" doc:id="ad358ad6-e1de-4daf-a56c-a334032008ea" name="unsolicited-vehicle-inquiry-request-subflow" />
+    </flow>
+    <flow name="post:\v1\AddTitle:api-config">
+        <logger level="INFO" message="Request to AAMVA for Add Title: #[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="add-title-request-subflow" doc:id="16dc35b0-be31-4592-850e-937a0b399c42" name="add-title-request-subflow" />
+    </flow>
+    <flow name="post:\v1\AddTitleResponse:api-config">
+        <logger level="INFO" message="Response from AAMVA for Add Title: #[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="add-title-response-subflow" doc:id="32a91bc8-50fe-46ad-a315-15bfb043e48b" name="add-title-response-subflow" />
+    </flow>
+    <flow name="post:\v1\RemoveTitle:api-config">
+        <logger level="INFO" doc:name="log-request-to-aamva" doc:id="c2519c18-d6cd-40a1-b2aa-84e1791af0a2" message="Request to AAMVA for Remove Title: #[payload]" />
+        <flow-ref doc:name="remove-title-request-subflow" doc:id="1d4fed85-bd39-4d49-81f4-adcfa8b1e60c" name="remove-title-request-subflow" />
+    </flow>
+    <flow name="post:\v1\RemoveTitleResponse:api-config">
+        <logger level="INFO" doc:name="log-response-from-aamva" doc:id="23fcdb39-5912-4638-9192-9cedf3841e88" message="Response from AAMVA for Remove Title: #[payload]" />
+        <flow-ref doc:name="remove-title-response-subflow" doc:id="76975a45-eb75-46eb-bc1d-a4096015dad9" name="remove-title-response-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoChangeJurisdictionOfTitle:api-config">
+        <logger level="INFO" message="Request to AAMVA for Undo Change SOT: #[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="undo-change-jurisdiction-of-title-request-subflow" doc:id="662b269b-7b6a-4e17-b8b6-4408811e2660" name="undo-change-jurisdiction-of-title-request-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoCSOTRequest:api-config">
+        <logger level="INFO" message="Request from AAMVA for Unsolicited CSOT Undo Notification: #[payload]" doc:name="log-request-from-aamva" />
+        <flow-ref doc:name="unsolicited-undo-csot-request-subflow" doc:id="30797a7c-835f-4c7d-a20d-111e0fddf2de" name="unsolicited-undo-csot-request-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoChangeJurisdictionOfTitleResponse:api-config">
+        <logger level="INFO" message="Response from AAMVA for Undo Change SOT: #[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="undo-change-jurisdiction-of-title-response-subflow" doc:id="7e020ddf-b1d5-468a-8378-bf8e02dc3126" name="undo-change-jurisdiction-of-title-response-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoCsotNotificationResponse:api-config">
+        <logger level="INFO" message="Response to AAMVA for Unsolicited Undo CSOT Notification: #[payload]" doc:name="log-response-to-aamva" />
+        <flow-ref doc:name="unsolicited-undo-csot-response-subflow" doc:id="035c3424-c0bf-4139-91d1-e23664d5d3d6" name="unsolicited-undo-csot-response-subflow" />
+    </flow>
+    <flow name="post:\v1\ChangeJurisdictionOfTitle:api-config">
+        <logger level="INFO" message="Request to AAMVA for csot request: #[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="change-jurisdiction-of-title-request-subflow" doc:id="86515f3f-eefc-45ee-bc41-8835a427c863" name="change-jurisdiction-of-title-request-subflow" />
+    </flow>
+    <flow name="post:\v1\ChangeJurisdictionOfTitleResponse:api-config">
+        <logger level="INFO" message="Response from AAMVA for Change SOT: #[payload]" doc:name="log-response-to-aamva" />
+        <flow-ref doc:name="change-jurisdiction-of-title-response-subflow" doc:id="521105db-21dd-436e-bb9f-9d79bb6d32bd" name="change-jurisdiction-of-title-response-subflow" />
+    </flow>
+    <flow name="post:\v1\TransferOrChangeTitle:api-config">
+        <logger level="INFO" message="Request to aamva for instate transfer tilte request: #[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="instate-title-transfer-request-subflow" doc:id="5274784c-2767-4222-b56a-d95cf321ec0b" name="instate-title-transfer-request-subflow" />
+    </flow>
+    <flow name="post:\v1\TransferOrChangeTitleResponse:api-config">
+        <logger level="INFO" message="Response from aamva for instate transfer tilte response: #[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="instate-title-transfer-response-subflow" doc:id="6226abee-7380-4fbb-8cc9-adcaefb197df" name="instate-title-transfer-response-subflow" />
+    </flow>
+    <flow name="post:\v1\MovedToCurrentNotice:api-config">
+        <logger level="INFO" message="Response from AAMVA for unsolicited Moved to History Notice: #[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="unsolicited-moved-to-current-notice-subflow" doc:id="1c9f82b9-3add-4edb-abb6-aaa593b66ee6" name="unsolicited-moved-to-current-notice-subflow" />
+    </flow>
+    <flow name="post:\v1\MovedToHistoryNotice:api-config">
+        <logger level="INFO" message="post:\v1\MovedToHistoryNotice:api-config" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="unsolicited-moved-to-history-notice-subflow" doc:id="ad39b7e3-a0b7-4cb3-82ef-f23d2b903dcb" name="unsolicited-moved-to-history-notice-subflow" />
+    </flow>
+    <flow name="post:\v1\OldJurisdictionVehicleRequest:api-config">
+        <logger level="INFO" message="post:\v1\OldJurisdictionVehicleRequest:api-config" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="unsolicited-old-jurisdiction-request-subflow" doc:id="4d09faf5-1b77-4b64-af65-018169602aa5" name="unsolicited-old-jurisdiction-request-subflow" />
+    </flow>
+    <flow name="post:\v1\OldJurisdictionVehicleResponse:api-config">
+        <logger level="INFO" message="post:\v1\OldJurisdictionVehicleResponse:api-config" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="unsolicited-old-jurisdiction-response-subflow" doc:id="7e8f55aa-6a01-4e17-8dab-981beea4c33b" name="unsolicited-old-jurisdiction-response-subflow" />
+    </flow>
+    <flow name="post:\v1\AddBrand:api-config">
+        <logger level="INFO" doc:name="log-request-to-aamva" doc:id="cd59e894-0219-4cdf-a048-8bf8dcdf64f8" message="Request to AAMVA for Add Brand: #[payload]" />
+        <flow-ref doc:name="add-brand-request-subflow" doc:id="97080983-e9ce-4a78-8e2b-e5b58175d628" name="add-brand-request-subflow" />
+    </flow>
+    <flow name="post:\v1\AddBrandResponse:api-config">
+        <logger level="INFO" doc:name="log-response-from-aamva" doc:id="e969b5c7-7d30-47e5-aacf-d2c8ede02b93" message="Response from AAMVA for Add Brand: #[payload]" />
+        <flow-ref doc:name="add-brand-response-subflow" doc:id="940436fc-7cb0-4ba0-97b8-253574881086" name="add-brand-response-subflow" />
+    </flow>
+    <flow name="post:\v1\ReceiveDuplicateNotice:api-config">
+        <logger level="INFO" message="Response from AAMVA for unsolicited Recieve Duplicate Notice: #[payload]" />
+        <flow-ref doc:name="Flow Reference" doc:id="63a55c1c-9a8d-4771-a06c-ec751c03ae99" name="unsolicited-recieve-duplicate-notice-subflow" />
+    </flow>
+    <flow name="post:\v1\ReceiveDuplicateResolvedNotice:api-config">
+        <logger level="INFO" message="Response from AAMVA for unsolicited Duplicate Resolved Notice: #[payload]" />
+        <flow-ref doc:name="Flow Reference" doc:id="e07d5901-a91b-4377-9f2e-19565e005b88" name="unsolicited-receive-duplicate-resolved-notice-subflow" />
+    </flow>
+    <flow name="post:\v1\BrandInquiry:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="brand-inquiry-request-subflow" doc:id="14d260bf-6aa5-4ff8-8a98-c0d79a3db4cf" name="brand-inquiry-request-subflow" />
+    </flow>
+    <flow name="post:\v1\BrandInquiryResponse:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="brand-inquiry-response-subflow" doc:id="e8957ea7-4e2b-4c08-acfa-770ab40ef3b9" name="brand-inquiry-response-subflow" />
+    </flow>
+    <flow name="post:\v1\PurgeTitle:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="purge-title-request-subflow" doc:id="8b4f63ac-62af-4c5d-a605-e5b1fb366e58" name="purge-title-request-subflow" />
+    </flow>
+    <flow name="post:\v1\PurgeTitleResponse:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="purge-title-response-subflow" doc:id="d6e76d8b-2eb5-422a-a75a-97b9918f8f1c" name="purge-title-response-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoTransferOrChangeTitle:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="undo-instate-title-transfer-request-subflow" doc:id="58572807-85c7-4b99-8644-4f9867fa857a" name="undo-instate-title-transfer-request-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoTransferOrChangeTitleResponse:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="undo-instate-title-transfer-response-subflow" doc:id="191906d6-4c8d-4c04-9d1f-00b3a6a5ac93" name="undo-instate-title-transfer-response-subflow" />
+    </flow>
+    <flow name="post:\v1\VehicleHistoryInquiry:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-request-to-aamva" />
+        <flow-ref doc:name="vehicle-history-request-subflow" doc:id="3e549213-dbf9-42b4-aa2d-6391339bd817" name="vehicle-history-request-subflow" />
+    </flow>
+    <flow name="post:\v1\VehicleHistoryResponse:api-config">
+        <logger level="INFO" message="#[payload]" doc:name="log-response-from-aamva" />
+        <flow-ref doc:name="vehicle-history-response-subflow" doc:id="1abf0fab-e1c5-4bf8-84c3-4f8f0cdc1107" name="vehicle-history-response-subflow" />
+    </flow>
+    <flow name="get:\v1\Authentication:api-config">
+        <logger level="INFO" message="#[payload]" />
+        <flow-ref doc:name="aamva-generate-auth-token-Flow Reference" doc:id="2470b134-3cb1-42be-a9a2-23281514206a" name="aamva-generate-auth-token-flow" />
+    </flow>
+    <flow name="post:\v1\OldJurisdictionVehicleErrorResponse:api-config">
+        <logger level="INFO" doc:name="log-response-from-aamva" doc:id="89cc7e7c-aae0-4e1a-bf95-156ebc274eb9" message="Response from AAMVA for unsolicited Old Jur Vehicle Error Response: #[payload]" />
+        <flow-ref doc:name="unsolicited-oldJurisdiction-vehicle-errorResponse-subflow" doc:id="d68c779a-d3dd-4a4c-9bdd-eedd45e2234c" name="unsolicited-oldJurisdiction-vehicle-errorResponse-subflow" />
+    </flow>
+    <flow name="post:\v1\Verification:api-config">
+        <logger level="INFO" message="#[payload]" />
+        <flow-ref doc:name="validate-auth-token-aamva-Flow Reference" doc:id="d6d9f027-2507-4f2c-ab4b-dcc32c0d0cb1" name="validate-auth-token-aamva-flow" />
+    </flow>
+    <flow name="post:\v1\ChangeJurisdictionOfTitleOldVehicleResponse:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="15613f6a-9144-49f0-8107-977fe6a81422" message="Response from AAMVA for Change SOT - Old Vehicle: #[payload]" />
+        <flow-ref doc:name="change-jurisdiction-of-title-oldVehicle-response-subflow" doc:id="577fee9e-0203-4774-b4f6-80463ce5080f" name="change-jurisdiction-of-title-oldVehicle-response-subflow" />
+    </flow>
+    <flow name="post:\v1\UndoCSOTErrorResponse:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="7d6229fb-c031-4b34-9572-6a87ae7e35cc" message="Response from AAMVA for unsolicited Undo CSOT Error Response: #[payload]" />
+        <flow-ref doc:name="unsolicited-undo-csot-errorResponse-subflow" doc:id="3cea97a4-d0e1-4534-ac21-450dc0ed528a" name="unsolicited-undo-csot-errorResponse-subflow" />
+    </flow>
+    <flow name="post:\v1\RemoveBrand:api-config">
+        <logger level="INFO" message="Request to AAMVA for Remove Brand: #[payload]" />
+		<flow-ref doc:name="remove-brand-request-subflow" doc:id="7555246f-0115-4e18-a337-059eda6b9a06" name="remove-brand-request-subflow"/>
+    </flow>
+    <flow name="post:\v1\RemoveBrandResponse:api-config">
+        <logger level="INFO" message="Response from AAMVA for Remove Brand: #[payload]" />
+		<flow-ref doc:name="remove-brand-response-subflow" doc:id="c025150b-d233-42d6-a211-49218ed0c25a" name="remove-brand-response-subflow"/>
+    </flow>
+</mule>

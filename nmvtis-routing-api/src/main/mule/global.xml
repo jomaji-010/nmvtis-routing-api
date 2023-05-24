@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<http:listener-config name="api-httpListenerConfig">
+        <http:listener-connection host="${http-listener.host}" port="${http-listener.port}" protocol="HTTPS" readTimeout="${http-listener.read-timeout}">
+            <tls:context>
+                <tls:key-store type="${http-listener.keystores.type}" path="${http-listener.keystores.path}" keyPassword="${http-listener.keystores.password}" password="${http-listener.keystores.password}" />
+            </tls:context>
+        </http:listener-connection>
+    </http:listener-config>
+    <apikit:config name="api-config" api="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus">
+        <apikit:flow-mappings>
+			<apikit:flow-mapping resource="/v3-1/Swagger" action="get" flow-ref="get:\v3-1\Swagger:api-config" />
+			<apikit:flow-mapping resource="/v3-1/Swagger-Jurisdiction" action="get" flow-ref="get:\v3-1\Swagger-Jurisdiction:api-config" />
+			<apikit:flow-mapping resource="/v1/NewVehicleInquiry" action="post" flow-ref="post:\v1\NewVehicleInquiry:api-config" />
+			<apikit:flow-mapping resource="/v1/NewVehicleInquiryReponse" action="post" flow-ref="post:\v1\NewVehicleInquiryReponse:api-config" />
+
+        </apikit:flow-mappings>
+    </apikit:config>
+    <http:request-config name="HTTP_AAMVA_Request_Configuration" doc:name="HTTP Request configuration" doc:id="c5ba72dc-ffd7-4b2b-b181-5aef0e978b07" basePath="${aamva-request.nmvtis.basepath}" responseTimeout="${aamva-request.nmvtis.response-timeout}">
+        <http:request-connection protocol="HTTPS" host="${aamva-request.nmvtis.host}" port="${aamva-request.nmvtis.port}">
+            <reconnection >
+				<reconnect frequency="${aamva-request.nmvtis.reconnection-frequency}" count="${aamva-request.nmvtis.reconnection-attempts}" />
+			</reconnection>
+			<tls:context>
+                <tls:key-store keyPassword="*%yyb)HRt7Qjy1192" password="*%yyb)HRt7Qjy1192" type="jks" path="aamvadevcert.jks" />
+            </tls:context>
+        </http:request-connection>
+    </http:request-config>
+    	<http:request-config name="HTTPS_AAMVA_Authenticate_Request" doc:name="HTTP Request configuration" doc:id="54b6eec3-7d43-40bb-81b1-c63e83f6f77f" basePath="${aamva.authenticate.basepath}" >
+		<http:request-connection protocol="HTTPS" host="${aamva.authenticate.host}" port="${aamva.authenticate.port}" >
+			<tls:context >
+				<tls:key-store type="jks" path="keystores/aamvadevcert.jks" keyPassword="*%yyb)HRt7Qjy1192" password="*%yyb)HRt7Qjy1192" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+		<http:request-config name="HTTPS_AAMVA_Verify_Token_Request" doc:name="HTTP Request configuration" doc:id="8b1fe308-d679-4ec4-9bd6-a60bf86f1f20" basePath="${aamva.verifytoken.basepath}">
+		<http:request-connection host="${aamva.verifytoken.host}" port="${aamva.verifytoken.port}" protocol="HTTPS">
+			<tls:context >
+				<tls:key-store type="jks" path="aamvadevcert.jks" keyPassword="*%yyb)HRt7Qjy1192" password="*%yyb)HRt7Qjy1192" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+    <http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="51418636-fbdd-48ff-b87c-0161ba320371">
+        <http:request-connection protocol="HTTPS" host="vehiclesystems.cert.nmvtis.aamva.org" />
+    </http:request-config>
+    <http:request-config name="HTTP_Request_configuration2" doc:name="HTTP Request configuration" doc:id="2a763975-83a7-4dfb-a9f3-d2fbbe3f79a3">
+        <http:request-connection protocol="HTTPS" host="vehiclesystems-jurisdiction.cert.nmvtis.aamva.org" port="443" />
+    </http:request-config>
+    <http:request-config name="New_Vechicle_Inquiry_PAPI" doc:name="HTTP Request configuration" doc:id="ee752cca-f61b-4840-b267-8b34cd78c7b1" basePath="${aamva-response.new-vehicle-inquiry-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.new-vehicle-inquiry-response.host}" port="${aamva-response.new-vehicle-inquiry-response.port}" />
+	</http:request-config>
+	<http:request-config name="Add_Title_PAPI" doc:name="HTTP Request configuration" doc:id="3f2739e3-6a43-4e1e-9e34-5d6c877251fa" basePath="${aamva-response.add-title-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.add-title-response.host}" port="${aamva-response.add-title-response.port}" />
+	</http:request-config>
+	<http:request-config name="Add_Brand_PAPI" doc:name="HTTP Request configuration" doc:id="6628eef3-a1ad-466c-9360-75f06580096f" basePath="${aamva-response.add-brand-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.add-brand-response.host}" port="${aamva-response.add-brand-response.port}" />
+	</http:request-config>
+	<http:request-config name="Remove_Brand_PAPI" doc:name="HTTP Request configuration" doc:id="eeb885d2-e827-4bb4-8586-12d9f8c585df" basePath="${aamva-response.remove-brand-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.remove-brand-response.host}" port="${aamva-response.remove-brand-response.port}" />
+	</http:request-config>
+	<http:request-config name="Remove_Title_PAPI" doc:name="HTTP Request configuration" doc:id="732225e0-e0b7-4389-8c78-e0f7589063ab" basePath="${aamva-response.remove-title-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.remove-title-response.host}" port="${aamva-response.remove-title-response.port}" />
+	</http:request-config>
+	<http:request-config name="Undo_Change_SOT_PAPI" doc:name="HTTP Request configuration" doc:id="0ad46bae-bff1-4237-9177-01e27d684c94" basePath="${aamva-response.undo-change-jurisdiction-of-title-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.undo-change-jurisdiction-of-title-response.host}" port="${aamva-response.undo-change-jurisdiction-of-title-response.port}" />
+	</http:request-config>
+	<http:request-config name="Change_SOT_PAPI" doc:name="HTTP Request configuration" doc:id="ed3cdebf-10d3-4ed6-904d-374b54785b47" basePath="${aamva-response.change-jurisdiction-of-title-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.change-jurisdiction-of-title-response.host}" port="${aamva-response.change-jurisdiction-of-title-response.port}" />
+	</http:request-config>
+	<configuration-properties doc:name="Env" doc:id="15544913-e990-4a0d-9873-d6921c037359" file="properties/${env}.yaml" />
+	<configuration doc:name="Global_Error_Handler" doc:id="faa94df2-4975-4770-90fc-a5b6f53cc651" defaultErrorHandler-ref="global-commonError_Handler" />
+	<configuration-properties doc:name="Configuration properties" doc:id="7c70a152-1b86-4fb7-b541-3b2e0c4996a9" file="properties/error-config.yaml" />
+	<http:request-config name="Used-vehicle-respone-papi" doc:name="HTTP Request configuration" doc:id="07e0e23a-abe1-4fe5-a3eb-df807d3b5938" basePath="${aamva-response.used-vehicle-inquiry-response.basepath}">
+		<http:request-connection protocol="HTTPS" host="${aamva-response.used-vehicle-inquiry-response.host}" port="${aamva-response.used-vehicle-inquiry-response.port}" />
+	</http:request-config>
+	<http:request-config name="csot-papi" doc:name="HTTP Request configuration" doc:id="29082777-f6bf-4f18-9b1f-fbe8e798cd67" basePath="${aamva-request.nmvtis.basepath}" >
+		<http:request-connection protocol="HTTPS" host="${aamva-request.nmvtis.host}" port="${aamva-request.nmvtis.port}" />
+	</http:request-config>
+	<http:request-config name="Brand-Inquiry-papi" doc:name="HTTP Request configuration" doc:id="b0c1cfaa-ece3-486b-bb6f-30ae2d76e078" basePath="${aamva-response.brand-inquiry-response.basepath}" >
+		<http:request-connection protocol="HTTPS" host="${aamva-response.brand-inquiry-response.host}" port="${aamva-response.brand-inquiry-response.port}" />
+	</http:request-config>
+	<http:request-config name="Purge-Title-papi" doc:name="HTTP Request configuration" doc:id="6428affe-57ea-406f-8476-e6ddf1aaa00b" basePath="${aamva-response.purge-title-response.basepath}" >
+		<http:request-connection host="${aamva-response.purge-title-response.host}" port="${aamva-response.purge-title-response.port}" protocol="HTTPS"/>
+	</http:request-config>
+	<http:request-config name="instate-title-transfer-papi" doc:name="HTTP Request configuration" doc:id="f01c9b28-9a37-4932-8bd2-70ca2293d5ab" basePath="${aamva-response.instate-title-transfer-response.basepath}" >
+		<http:request-connection host="${aamva-response.instate-title-transfer-response.host}" port="${aamva-response.instate-title-transfer-response.port}" protocol="HTTPS"/>
+	</http:request-config>
+	<http:request-config name="undo-instate-title-transfer-papi" doc:name="HTTP Request configuration" doc:id="a39857d2-d1e3-43ff-844b-d58cf51fca99" basePath="${aamva-response.undo-instate-title-transfer-response.basepath}" >
+		<http:request-connection host="${aamva-response.undo-instate-title-transfer-response.host}" port="${aamva-response.undo-instate-title-transfer-response.port}" protocol="HTTPS"/>
+	</http:request-config>
+		<http:request-config name="vehicle-history-papi" doc:name="HTTP Request configuration" doc:id="5f456f50-df39-431f-8a04-3cda3bd70e4b" basePath="${aamva-response.vehicle-history-inquiry-response.basepath}" >
+		<http:request-connection host="${aamva-response.vehicle-history-inquiry-response.host}" port="${aamva-response.vehicle-history-inquiry-response.port}" protocol="HTTPS"/>
+	</http:request-config>
+	<os:object-store name="Object_store" doc:name="Object store" doc:id="251f5d29-4a0b-4d7f-99df-7a7a9e3e29fc" entryTtl="${objectstore.entryttl}" expirationInterval="${objectstore.expirationinterval}" persistent="false"/>
+    
+</mule>

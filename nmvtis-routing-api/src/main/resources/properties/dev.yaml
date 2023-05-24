@@ -1,0 +1,138 @@
+http-listener:
+  host: "0.0.0.0"
+  port: "8082"
+  path: "/api/*"
+  read-timeout: "30000"
+  keystores:
+   type: "JKS"
+   path: "keystores/keystore.jks"
+   password: "Mule@#2022"
+   
+aamva: 
+ authenticate:
+  host: "authentication-rest-cert.aamva.org"
+  port: "443"
+  basepath: "/Authentication"
+  path: "/authenticate"
+  keystore:
+    type: "JKS"
+    path: "kestores/aamvadevcert.jks"
+    password: "*%yyb)HRt7Qjy1192"
+  
+ verifytoken:
+  host: "tokenverification-rest-cert.aamva.org"
+  port: "443"
+  basepath: "/Verification"
+  path: "/verify"
+  
+objectstore:
+ entryttl: "300"
+ expirationinterval: "3"
+
+aamva-request: 
+ authenticate:
+  host: "authentication-rest-cert.aamva.org"
+  port: "443"
+  basepath: "/Authentication"
+  path: "/authenticate"
+ nmvtis:
+  host: "vehiclesystems.cert.nmvtis.aamva.org"
+  port: "443"
+  basepath: "/v1"
+  response-timeout: "30000"
+  reconnection-frequency: "3000"
+  reconnection-attempts: "2"
+  new-vehicle-inquiry-path: "/NewVehicleInquiry"
+  used-vehicle-inquiry-path: "/UsedVehicleInquiry"
+  unsolicited-vehicle-inquiry-path: "/StateVehicleDataResponse"
+  add-title-path: "/AddTitle"
+  remove-title-path: "/RemoveTitle"
+  undo-change-jurisdiction-of-title-path: "/UndoChangeJurisdictionOfTitle"
+  unsolicited-undo-csot-response-path: "/UndoCsotNotificationResponse"
+  change-jurisdiction-of-title-path: "/ChangeJurisdictionOfTitle"
+  instate-title-transfer-path: "/TransferOrChangeTitle"
+  unsolicited-old-jurisdiction-path: "/OldJurisdictionVehicleResponse"
+  add-brand-path: "/AddBrand"
+  remove-brand-path: "/RemoveBrand"
+  brand-inquiry-path: "/BrandInquiry"
+  purge-title-path: "/PurgeTitle"
+  undo-instate-title-transfer-path: "/UndoTransferOrChangeTitle"
+  vehicle-history-inquiry-path: "/VehicleHistoryInquiry"
+  
+  
+aamva-response:
+ new-vehicle-inquiry-response:
+  host: "nmvtis-new-vehicle-inquiry-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/NewVehicleInquiryResponse"
+ used-vehicle-inquiry-response:
+  host: "nmvtis-used-vehicle-inquiry-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/UsedVehicleInquiryResponse"
+  unsolicited-request-path: "/v1/StateVehicleDataRequest"
+ add-title-response:
+  host: "nmvtis-add-title-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/AddTitleResponse"
+ remove-title-response:
+  host: "nmvtis-remove-title-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/RemoveTitleResponse"
+ change-jurisdiction-of-title-response:
+  host: "nmvtis-csot-papi.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/ChangeJurisdictionOfTitleResponse"
+  oldVehicle-path: "/v1/ChangeJurisdictionOfTitleOldVehicleResponse"
+  unsolicited-movedToHistory-path: "/v1/MovedToHistoryNotice"
+  unsolicited-movedToCurrent-path: "/v1/MovedToCurrentNotice"
+  unsolicited-oldJurisdiction-path: "/v1/OldJurisdictionVehicleRequest"
+  unsolicited-receiveDuplicateNotice-path: "/v1/ReceiveDuplicateNotice"
+  unsolicited-resolvedDuplicateNotice-path: "/v1/ReceiveDuplicateResolvedNotice"
+  unsolicited-oldJurisdiction-vehicle-errorResponse-path: "/v1/OldJurisdictionVehicleErrorResponse"
+ undo-change-jurisdiction-of-title-response:
+  host: "nmvtis-undo-csot-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/UndoChangeJurisdictionOfTitleResponse"
+  unsolicited-undo-csot-request-path: "/v1/UndoCSOTRequest"
+  unsolicited-undo-csot-errorResponse-path: "/v1/UndoCSOTErrorResponse"
+ instate-title-transfer-response:
+  host: "nmvtis-instate-title-transfer-papi.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/TransferOrChangeTitleResponse"
+ add-brand-response:
+  host: "nmvtis-add-brand-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/AddBrandResponse"
+ remove-brand-response:
+  host: "nmvtis-remove-brand-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/RemoveBrandResponse"
+ brand-inquiry-response:
+  host: "nmvtis-brand-inquiry-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/BrandInquiryResponse"
+ purge-title-response:
+  host: "nmvtis-purge-title-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/PurgeTitleResponse"
+ undo-instate-title-transfer-response:
+  host: "nmvtis-undo-instate-title-transfer-papi.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/UndoTransferOrChangeTitleResponse"
+ vehicle-history-inquiry-response:
+  host: "nmvtis-vehicle-history-inquiry-papi-dev.us-e1.cloudhub.io"
+  port: "443"
+  basepath: "/api"
+  path: "/v1/VehicleHistoryResponse"

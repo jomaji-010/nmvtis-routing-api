@@ -1,0 +1,4 @@
+{
+    "code": "REQUEST_VALIDATION_ERROR",
+    "message": "Invalid schema for content type application/json. Errors: Unsupported chars in string value (probably a binary file). "
+}
