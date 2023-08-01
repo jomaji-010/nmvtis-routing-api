@@ -1,0 +1,47 @@
+{
+  "networkControl": {
+    "transactionOriginator": "D9",
+    "messageOriginator": "D9",
+    "messageDestination": "OO",
+    "transactionLocator": "2301200028076911DMVASSETNT"
+  },
+  "conversionExceptions": [
+    {
+      "exceptionElementTag": "string",
+      "exceptionValueBinaryObject": "string"
+    }
+  ],
+  "warnings": [
+    {
+      "id": "string",
+      "message": "string",
+      "sequenceId": 0,
+      "type": "string",
+      "actor": "string",
+      "module": "string",
+      "objectText": "string",
+      "objectOccurrenceId": "string"
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "string",
+      "message": "string",
+      "sequenceId": 0,
+      "type": "string",
+      "actor": "string",
+      "module": "string",
+      "objectText": "string",
+      "objectOccurrenceId": "string"
+    }
+  ],
+  "vin": "string",
+  "titleSummary": {
+    "titleNumber": "string",
+    "sot": "string",
+    "titlingKey": "string"
+  },
+  "isErrorFound": true,
+  "savedTransactionLocator": "string",
+  "savedTransactionOriginator": "string"
+}

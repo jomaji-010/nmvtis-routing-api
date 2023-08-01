@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="post-unsolicited-old-jurisdiction-response.xml" doc:id="8eef85a8-307e-4acb-9a96-6db70acf53c9" >
+		<set-variable value="#[payload]" doc:name="set-inputRequest" doc:id="61d66e50-a22f-4f60-9f74-7dce8ef98f38" variableName="inputRequest" />
+		<logger level="INFO" doc:name="log-inputReq" doc:id="f267bfa4-9226-4072-a7ef-2fa0281f3a05" message="Incoming input request: #[payload]" />
+		<http:request method="${nmvtis-sf-unsolicited-sapi.method}" doc:name="call-unsolicited-SAPI" doc:id="743f07e0-a596-425c-9eb9-3b9998d6d6c4" config-ref="nmvtis-sf-unsolicited-sapi" path="${nmvtis-sf-unsolicited-sapi.OldJurisdictionVehicleResponsePath}" />
+		<ee:transform doc:name="acknowledgement" doc:id="7e9829b7-8690-46a2-9693-f51da3605cdc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

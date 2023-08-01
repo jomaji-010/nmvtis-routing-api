@@ -1,0 +1,11 @@
+{
+  "networkControl": {
+    "transactionOriginator": "2212011205268574DMVASSETVH",
+    "messageOriginator": "D9",
+    "messageDestination": "OO",
+    "transactionLocator": "D9",
+    "businessTransactionGUID": "c618b4f2-13b3-11ed-861d-0242ac120002",
+	  "transactionTypeID": "NM13"
+  },
+  "vin": "1HGCT1B44HA004697"
+}

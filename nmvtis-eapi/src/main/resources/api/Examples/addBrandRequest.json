@@ -1,0 +1,23 @@
+{
+  "networkControl": {
+    "transactionOriginator": "D9",
+    "messageOriginator": "D9",
+    "messageDestination": "OO",
+    "transactionLocator": "2212011205268574DMVASSETBA"
+  },
+  "vehicleSummary": {
+    "vin": "string",
+    "makeCode": "string",
+    "modelYear": 0
+  },
+  "brand": {
+    "brandCode": "string",
+    "salvagePercentage": 0,
+    "damagePercentageTypeCode": "string",
+    "brandDate": "2023-02-15"
+  },
+  "vehicleBrander": {
+    "branderId": "string",
+    "branderTypeCode": "string"
+  }
+}

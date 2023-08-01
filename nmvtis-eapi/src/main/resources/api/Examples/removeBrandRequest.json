@@ -1,0 +1,17 @@
+{
+  "networkControl": {
+    "transactionOriginator": "D9",
+    "messageOriginator": "D9",
+    "messageDestination": "OO",
+    "transactionLocator": "2212011205268574DMVASSETBU",
+    "businessTransactionGUID": "c618b4f2-13b3-11ed-861d-0242ac120002",
+	  "transactionTypeID": "NM13"
+  },
+  "vin": "string",
+  "vehicleBrander": {
+    "branderId": "string",
+    "branderTypeCode": "string"
+  },
+  "brandCode": "string",
+  "brandDate": "2023-03-01"
+}

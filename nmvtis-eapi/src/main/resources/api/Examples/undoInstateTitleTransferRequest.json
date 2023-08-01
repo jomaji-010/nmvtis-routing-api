@@ -1,0 +1,13 @@
+{
+  "networkControl": {
+    "transactionOriginator": "string",
+    "messageOriginator": "string",
+    "messageDestination": "string",
+    "transactionLocator": "string",
+    "businessTransactionGUID": "string",
+    "transactionTypeID": "NM10"
+  },
+  "vin": "string",
+  "titleNumber": "string",
+  "sot": "string"
+}

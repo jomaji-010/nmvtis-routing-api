@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<flow name="post-purge-title" doc:id="c8f8e888-a4ec-420e-bd2e-0f806d7a182f" >
+		<set-variable value="#[payload]" doc:name="set-inputRequest" doc:id="d706b0fb-0413-4c05-9f39-6d528e4a0ffb" variableName="inputRequest" />
+		<logger level="INFO" doc:name="log-inputReq" doc:id="4e8e6e04-1794-4cd5-b5cb-804e6a7f2f13" message="Incoming input request: #[payload]" />
+		<http:request method="${nmvtis-sf-solicited-sapi.method}" doc:name="call-solicited-SAPI" doc:id="a30d91cb-3828-4770-9e2b-f4a17e56267e" config-ref="nmvtis-sf-solicited-sapi" path="${nmvtis-sf-solicited-sapi.purgeTitlePath}"/>
+		<ee:transform doc:name="acknowledgement" doc:id="919cdd54-6f54-4d2d-b155-ef607b0250bd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

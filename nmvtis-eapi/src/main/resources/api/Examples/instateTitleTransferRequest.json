@@ -1,0 +1,27 @@
+{
+  "networkControl": {
+    "transactionOriginator": "string",
+    "messageOriginator": "string",
+    "messageDestination": "string",
+    "transactionLocator": "string",
+    "businessTransactionGUID": "string",
+    "transactionTypeID": "string"
+  },
+  "vehicleSummary": {
+    "vin": "string",
+    "makeCode": "string",
+    "modelYear": 0
+  },
+  "odometer": {
+    "reading": "string",
+    "uomCode": "string"
+  },
+  "oldKey": {
+    "titleNumber": "string",
+    "sot": "string",
+    "vin": "string"
+  },
+  "titleNumber": "string",
+  "titlingDate": "2023-02-07",
+  "titlingKey": "string"
+}
