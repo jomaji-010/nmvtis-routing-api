@@ -1,0 +1,14 @@
+{
+  "networkControl": {
+    "transactionLocator": "string",
+    "transactionOriginator": "D9",
+    "messageOriginator": "D9",
+    "messageDestination": "XX",
+    "businessTransactionGUID": "c618b4f2-13b3-11ed-861d-0242ac120002",
+	  "transactionTypeID": "NM07"
+
+  },
+  "vin": "1FAHP25NX8W134012",
+  "titleNumber": "59936628",
+  "sot": "CA"
+}

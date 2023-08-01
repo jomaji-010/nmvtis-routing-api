@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="post-add-brand" doc:id="5e71243f-f25a-4b55-b8af-3ff1ad054fda" >
+		<set-variable value="#[payload]" doc:name="set-inputRequest" doc:id="4571e1fc-6693-4f29-a7ed-6b74a31ee31f" variableName="inputRequest" />
+		<logger level="INFO" doc:name="log-inputReq" doc:id="b331f94c-b19f-46ce-bcc6-c4bef355ab34" message="Incoming input request: #[payload]" />
+		<http:request method="${nmvtis-sf-solicited-sapi.method}" doc:name="call-solicited-SAPI" doc:id="5fa86d04-963a-4110-bd85-59c99914e3d3" config-ref="nmvtis-sf-solicited-sapi" path="${nmvtis-sf-solicited-sapi.addBrandPath}" />
+		<ee:transform doc:name="acknowledgement" doc:id="8dbd654b-6206-493a-9aa9-2809b7bb0065" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler ref="global-commonError_Handler" />
+	</flow>
+</mule>

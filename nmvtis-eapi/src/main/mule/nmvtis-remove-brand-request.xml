@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="post-remove-brand" doc:id="fb6872e7-fda0-4b29-8244-10a5f7b595e6" >
+		<set-variable value="#[payload]" doc:name="set-inputRequest" doc:id="2740fcbe-7ccb-4823-b5d2-56391325adb7" variableName="inputRequest" />
+		<logger level="INFO" doc:name="log-inputReq" doc:id="f92b40a2-2751-4971-b7ce-34710482c226" message="Incoming input request: #[payload]" />
+		<http:request method="${nmvtis-sf-solicited-sapi.method}" doc:name="call-solicited-SAPI" doc:id="8000ca29-b79d-4967-883d-5d89d07a43d7" config-ref="nmvtis-sf-solicited-sapi" path="${nmvtis-sf-solicited-sapi.removeBrandPath}" />
+		<ee:transform doc:name="acknowledgement" doc:id="27e9eec4-fcb9-4083-98ad-719b447abcad" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

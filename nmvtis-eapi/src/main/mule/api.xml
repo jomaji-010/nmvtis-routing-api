@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd  http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+    <flow name="api-main">
+        <http:listener config-ref="api-httpListenerConfig" path="${http-listener.path}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="api-config" />
+    </flow>
+    <flow name="api-console">
+        <http:listener config-ref="api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="api-config" />
+    </flow>
+    <flow name="post:\v1\NewVehicleInquiry:application\json:api-config" doc:id="61f7459f-6287-4dae-976a-87355a11e4f0">
+        <logger level="INFO" doc:name="Logger" doc:id="7c01506c-1b46-44cc-8dac-4ebe8137495a" message="Inside Exp API." />
+        <flow-ref doc:name="post-new-vehicle-inquiry" doc:id="9a4f6dc9-86f9-4366-aa97-d51bffc492e9" name="post-new-vehicle-inquiry" />
+    </flow>
+    <flow name="post:\v1\UsedVehicleInquiry:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="3045090b-f44d-40e6-b43d-32e4100d1a24" message="Inside EAPI" />
+        <flow-ref doc:name="post-used-vehicle-inquiry" doc:id="60c8a9af-9c5b-44fe-9025-a83da536b036" name="post-used-vehicle-inquiry" />
+    </flow>
+    <flow name="post:\v1\AddTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="5c930c38-4f30-46c8-9b22-343258e94e4f" message="Inside EAPI." />
+        <flow-ref doc:name="post-add-title" doc:id="9e503590-78a3-4321-ba47-118dc200f9e6" name="post-add-title" />
+    </flow>
+    <flow name="post:\v1\StateVehicleDataResponse:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="f66a1b06-cd7b-4d22-80eb-17329bbf32ec" message="Inside EAPI." />
+        <flow-ref doc:name="post-unsolicited-vehicle-inquiry" doc:id="e3c52b9f-2411-42ad-9193-954a28db9460" name="post-unsolicited-vehicle-inquiry" />
+    </flow>
+    <flow name="post:\v1\RemoveTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="7570af4b-f7d1-4aa2-ad13-1cdc2c7bf040" message="Inside EAPI." />
+        <flow-ref doc:name="post-remove-title" doc:id="21d0531e-2656-48e8-8762-c4400b7f1312" name="post-remove-title" />
+    </flow>
+    <flow name="post:\v1\UndoChangeJurisdictionOfTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="70c40802-d150-4b01-ab1f-c0ad42f97efe" message="Inside EAPI." />
+        <flow-ref doc:name="undo-Change-Jurisdiction-Of-Title" doc:id="5db75254-3049-44af-af30-68e0c705068f" name="post-Undo-Change-Jurisdiction-Of-Title" />
+    </flow>
+    <flow name="post:\v1\ChangeJurisdictionOfTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="3c44c672-e427-4c31-bae4-b5857713f3cf" message="Inside EAPI" />
+        <flow-ref doc:name="Change-Jurisdiction-Of-Title" doc:id="78f84cae-b805-4e20-b7ba-a2e97f198528" name="post-Change-Jurisdiction-Of-Title" />
+    </flow>
+    <flow name="post:\v1\UndoCsotNotificationResponse:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="40fa7feb-09af-4559-870a-2be76ac84412" message="Inside EAPI." />
+        <flow-ref doc:name="post-unsolicited-undo-csot-response.xml" doc:id="a7a158ea-c7a7-418b-bf7d-dd0cf52f5383" name="post-unsolicited-undo-csot-response.xml" />
+    </flow>
+    <flow name="post:\v1\AddBrand:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="2d7b1913-a495-4837-abf0-0098b63f4fc5" message="Inside EAPI." />
+        <flow-ref doc:name="post-add-brand" doc:id="958fb81a-b38d-4a7d-b6d4-b31a15f50216" name="post-add-brand" />
+    </flow>
+    <flow name="post:\v1\OldJurisdictionVehicleResponse:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="ce62dacf-cc36-4746-9fb4-f3ad381b447d" message="#[payload]" />
+        <flow-ref doc:name="post-unsolicited-old-jurisdiction-response" doc:id="76a0ef8c-b065-4212-9182-b64acb5e0893" name="post-unsolicited-old-jurisdiction-response.xml" />
+    </flow>
+    <flow name="post:\v1\TransferOrChangeTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="ff05ecaf-161f-4e78-b59c-8929aac24ad9" message="#[payload]" />
+        <flow-ref doc:name="post-instate-transfer-title" doc:id="41f9cd9c-1f2e-49ea-a55d-30c17a474899" name="post-instate-transfer-title" />
+    </flow>
+    <flow name="post:\v1\BrandInquiry:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="2d6bc6cb-2c00-48e2-8e99-d1f83b323e16" message="#[payload]" />
+        <flow-ref doc:name="post-brand-inquiry" doc:id="df24def3-8daa-4904-9265-029e14f3f19e" name="post-brand-inquiry" />
+    </flow>
+    <flow name="post:\v1\PurgeTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="8ffafb41-443d-4bf7-901e-9ba5ad807ae1" message="#[payload]" />
+        <flow-ref doc:name="post-purge-title" doc:id="584265c6-b88c-457e-9f01-17393c6301b0" name="post-purge-title" />
+    </flow>
+    <flow name="post:\v1\RemoveBrand:application\json:api-config">
+        <flow-ref doc:name="Flow Reference" doc:id="5885d329-1270-4802-b086-ff28eb55348b" name="post-remove-brand" />
+    </flow>
+    <flow name="post:\v1\UndoTransferOrChangeTitle:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="a705be6c-7f57-4ccf-90f2-0018eade273b" message="#[payload]" />
+        <flow-ref doc:name="post-undo-instate-transfer-title" doc:id="2b87635f-2b25-43cc-b50d-031aa6832dcd" name="post-undo-instate-transfer-title" />
+    </flow>
+    <flow name="post:\v1\VehicleHistoryInquiry:application\json:api-config">
+        <logger level="INFO" doc:name="Logger" doc:id="6244bcaf-0cc0-44d3-8cd7-f9d1af1e6760" message="#[payload]" />
+        <flow-ref doc:name="post-vehicle-history-inquiry" doc:id="d79fae51-6b28-4d82-a156-baad82295030" name="post-vehicle-history-inquiry" />
+    </flow>
+</mule>

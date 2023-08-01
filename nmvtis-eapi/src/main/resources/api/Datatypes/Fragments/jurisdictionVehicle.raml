@@ -1,0 +1,11 @@
+#%RAML 1.0 DataType
+    type: object
+    properties:
+      titlingKey?:
+        type: string | nil
+      title?: !include titleJurisdiction.raml
+      vehicle?: !include vehicle.raml
+      liens?: !include liensUnsolicited.raml
+      previousTitle?: !include previousTitle.raml
+      brands?: !include brands.raml
+      ownerNames?: !include ownerNames.raml

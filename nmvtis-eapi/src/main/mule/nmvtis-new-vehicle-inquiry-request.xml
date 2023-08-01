@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="post-new-vehicle-inquiry" doc:id="c7f9e3b0-b710-4aef-a674-a233263cc7c8">
+		<set-variable value="#[payload]" doc:name="set-inputRequest" doc:id="6c90fd82-e15c-4b20-9e20-f21e17804232" variableName="inputRequest"/>
+		<logger level="INFO" doc:name="log-inputReq" doc:id="dbe04781-eb34-4499-b040-fdf3a1da4903" message="Incoming input request: #[payload]" />
+		<http:request method="${nmvtis-sf-solicited-sapi.method}" doc:name="call-solicited-SAPI" doc:id="298cd67a-d426-495f-b8eb-9f28503d3951" config-ref="nmvtis-sf-solicited-sapi" path="${nmvtis-sf-solicited-sapi.newVehicleInquiryPath}"/>
+		<ee:transform doc:name="acknowledgement" doc:id="b6bd4961-06d1-4e59-8c4e-9719b01cb989" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+    
+</flow>
+	</mule>

@@ -1,0 +1,106 @@
+{
+  "networkControl": {
+    "transactionOriginator": "string",
+    "messageOriginator": "string",
+    "messageDestination": "string",
+    "transactionLocator": "string"
+  },
+  "conversionExceptions": [
+    {
+      "exceptionElementTag": "string",
+      "exceptionValueBinaryObject": "string"
+    }
+  ],
+  "warnings": [
+    {
+      "id": "string",
+      "message": "string",
+      "sequenceId": 0,
+      "type": "string",
+      "actor": "string",
+      "module": "string",
+      "objectText": "string",
+      "objectOccurrenceId": "string"
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "string",
+      "message": "string",
+      "sequenceId": 0,
+      "type": "string",
+      "actor": "string",
+      "module": "string",
+      "objectText": "string",
+      "objectOccurrenceId": "string"
+    }
+  ],
+  "vin": "string",
+  "csotCode": "string",
+  "recordMatchSequenceId": "string",
+  "jurisdictionVehicle": {
+    "titlingKey": "string",
+    "title": {
+      "titleNumber": "string",
+      "titlingDate": "2022-12-19",
+      "sot": "string",
+      "documentTypeCode": "string",
+      "statusTypeCode": "string",
+      "statusDate": "2022-12-19"
+    },
+    "vehicle": {
+      "makeCode": "string",
+      "modelYear": 0,
+      "odometer": {
+        "reading": "string",
+        "uomCode": "string"
+      },
+      "odometerReadingDate": "2022-12-19",
+      "gvwr": "string",
+      "grossLadenSumWeight": "string",
+      "unladenWeight": "string",
+      "axleQuantity": 0,
+      "doorQuantity": 0,
+      "cylinderQuantity": 0,
+      "useCode": "string",
+      "fuelTypeCode": "string",
+      "newCode": "string",
+      "secondaryColor": "string",
+      "primaryColor": "string",
+      "modelDescription": "string",
+      "bodyStyleCode": "string",
+      "seriesModelCode": "string",
+      "modelCode": "string",
+      "bodyCategoryCode": "string",
+      "isRental": true,
+      "isLease": true,
+      "lienQuantity": 0,
+      "ownerAppliedId": "string",
+      "vinIssuer": "string"
+    },
+    "liens": [
+      {
+        "address": "string",
+        "name": "string",
+        "amount": 0,
+        "lienDate": "2022-12-19"
+      }
+    ],
+    "previousTitle": {
+      "titleNumber": "string",
+      "sot": "string"
+    },
+    "brands": [
+      {
+        "brandCode": "string",
+        "salvagePercentage": 0,
+        "damagePercentageTypeCode": "string",
+        "brandDate": "2022-12-19",
+        "branderId": "string"
+      }
+    ],
+    "ownerNames": [
+      "string"
+    ]
+  }
+}

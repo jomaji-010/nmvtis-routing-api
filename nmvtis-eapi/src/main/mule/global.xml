@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<http:listener-config name="api-httpListenerConfig">
+        <http:listener-connection host="${http-listener.host}" port="${http-listener.port}" readTimeout="${http-listener.read-timeout}" protocol="HTTPS">
+			<tls:context >
+				<tls:key-store type="${http-listener.keystores.type}" path="${http-listener.keystores.path}" keyPassword="${http-listener.keystores.password}" password="${http-listener.keystores.password}" />
+			</tls:context>
+		</http:listener-connection>
+    </http:listener-config>
+    <apikit:config name="api-config" api="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" >
+		<apikit:flow-mappings >
+			<apikit:flow-mapping resource="/v1/NewVehicleInquiry" action="post" content-type="application/json" flow-ref="post:\v1\NewVehicleInquiry:application\json:api-config" />
+		</apikit:flow-mappings>
+	</apikit:config>
+		<http:request-config name="nmvtis-sf-solicited-sapi" doc:name="HTTP Request configuration" doc:id="531e8f51-4844-4afc-a660-54e4d755af6d" basePath="${nmvtis-sf-solicited-sapi.basepath}" responseTimeout="${nmvtis-sf-solicited-sapi.response-timeout}">
+		<http:request-connection protocol="HTTPS" host="${nmvtis-sf-solicited-sapi.host}" port="${nmvtis-sf-solicited-sapi.port}" connectionIdleTimeout="${nmvtis-sf-solicited-sapi.connection-idle-timeout}">
+			<reconnection >
+				<reconnect frequency="${nmvtis-sf-solicited-sapi.reconnection-frequency}" count="${nmvtis-sf-solicited-sapi.reconnection-attempts}" />
+			</reconnection>
+		</http:request-connection>
+	</http:request-config>
+			<http:request-config name="nmvtis-sf-unsolicited-sapi" doc:name="HTTP Request configuration" doc:id="a6efb986-4565-4752-99cb-fd99f233745a" basePath="${nmvtis-sf-unsolicited-sapi.basepath}" responseTimeout="${nmvtis-sf-unsolicited-sapi.response-timeout}">
+		<http:request-connection protocol="HTTPS" host="${nmvtis-sf-unsolicited-sapi.host}" port="${nmvtis-sf-unsolicited-sapi.port}" connectionIdleTimeout="${nmvtis-sf-unsolicited-sapi.connection-idle-timeout}">
+			<reconnection >
+				<reconnect frequency="${nmvtis-sf-unsolicited-sapi.reconnection-frequency}" count="${nmvtis-sf-unsolicited-sapi.reconnection-attempts}" />
+			</reconnection>
+		</http:request-connection>
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="fa97cced-867d-42c1-819e-90681ab9e8d2" file="properties/${env}.yaml" />
+	<configuration doc:name="Configuration" doc:id="dd41cf47-b39d-4ef2-8b17-b40636dd1d2f" defaultErrorHandler-ref="global-commonError_Handler" />
+	<configuration-properties doc:name="Configuration properties" doc:id="95c28db8-81a2-49e2-9a19-3eb16e4841ae" file="properties\error-config.yaml" />
+</mule>

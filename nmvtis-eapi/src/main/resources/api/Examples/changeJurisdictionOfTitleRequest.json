@@ -1,0 +1,30 @@
+{
+    "networkControl": {
+        "transactionTypeID": "NM06",
+        "transactionOriginator": "D9",
+        "transactionLocator": "2301220142032239DMVASSETUT",
+        "messageOriginator": "D9",
+        "messageDestination": "OO",
+        "businessTransactionGUID": "ded80265-1d6e-20ea-5f74-a48969c01c95"
+    },
+    "vehicleSummary": {
+        "vin": "123456",
+        "modelYear": 2012,
+        "makeCode": "9990"
+    },
+    "titleSummary": {
+        "titlingKey": "D9",
+        "titleNumber": "87283424",
+        "sot": "D9"
+    },
+    "titlingDate": "2023-01-20",
+    "odometer": {
+        "uomCode": "123",
+        "reading": "9807"
+    },
+    "oldKey": {
+        "vin": "80978900",
+        "titleNumber": "87900",
+        "sot": "D9"
+    }
+}

@@ -1,0 +1,485 @@
+#%RAML 1.0
+title: MuleSoft Experience API for all NVMTIS interfaces
+baseUri: api 
+version: v1
+description: "<p> RESTful API for NVMTIS</p><p>Note: This is an experience API RAML specification. It outlines the request and response structure and also the elements inside it. This RAML only provides an layout of the messages.  Business rules, and which fields are mandatory, are presented in the NMVTIS specification document and will be incorporated into the implementation</p>" 
+protocols: [HTTPS]
+mediaType: 
+- application/json
+
+
+/v1/NewVehicleInquiry:
+  post:
+    description: This Mule API specificaion captures the request from API consumer to perform a new vehicle inquiry transaction on AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/newVehicleInquiryRequest.raml
+        example: !include Examples/newVehicleInquiryRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           type: !include Datatypes/Failure/400Response.raml
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            type: !include Datatypes/Failure/401Response.raml
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+            type: !include Datatypes/Failure/500Response.raml
+            example: !include Examples/Failure/500Response.json
+
+/v1/UsedVehicleInquiry:
+  post:
+    description: This Mule API specificaion captures the request from API consumer to perform a used vehicle inquiry transaction on AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/usedVehicleInquiryRequest.raml
+        example: !include Examples/usedVechicleInquiryRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/StateVehicleDataResponse:
+  post:
+    description: This Mule API specificaion captures the request from API consumer Salesforce to post the response of an unsolicited vehicle inquiry to AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/stateVehicleDataResponse.raml
+        example: !include Examples/stateVechicleDateResponse.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+           
+/v1/AddTitle:
+  post:
+    description: This Mule API specificaion captures the request from API consumer to perform an add title transaction on AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/addTitleRequest.raml
+        example: !include Examples/addTitleRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           type: !include Datatypes/Failure/400Response.raml
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            type: !include Datatypes/Failure/401Response.raml
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           type: !include Datatypes/Failure/500Response.raml
+           example: !include Examples/Failure/500Response.json
+
+/v1/RemoveTitle:
+  post:
+    description: This Mule API specificaion captures the request from API consumer to perform an remove title transaction on AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/removeTitleRequest.raml
+        example: !include Examples/removeTitleRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           type: !include Datatypes/Failure/400Response.raml
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            type: !include Datatypes/Failure/401Response.raml
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           type: !include Datatypes/Failure/500Response.raml
+           example: !include Examples/Failure/500Response.json
+
+/v1/UndoChangeJurisdictionOfTitle:
+  post:
+    description: This Mule API specificaion captures the request from API consumer to perform a used vehicle inquiry transaction on AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/undoChangeJurisdictionOfTitleRequest.raml
+        example: !include Examples/undoChangeJurisdictionOfTitleRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/UndoCsotNotificationResponse:
+  post:
+    description: This Mule API specificaion captures the response from API consumer Salesforce to post the response of an unsolicited Undo CSOT Notification to AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include /Datatypes/undoCSOTNotificationResponse.raml
+        example: !include /Examples/undoCSOTNotificationResponse.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/ChangeJurisdictionOfTitle:
+    post:
+     description: This Mule API specificaion captures the request from API consumer to perform Change Jurisdiction Of Title transaction on AAMVA-NMVTIS.
+     body:
+      application/json:
+        type: !include Datatypes/changeJurisdictionOfTitleRequest.raml
+        example: !include Examples/changeJurisdictionOfTitleRequest.json
+     responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/TransferOrChangeTitle:
+  post:
+    description: This Mule API specificaion captures the request from Mule Experience API which is the consumer here, to perform a In-State Title Transfer Change Data.
+    body:
+      application/json:
+        type: !include Datatypes/instateTitleTransferRequest.raml
+        example: !include Examples/instateTitleTransferRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/OldJurisdictionVehicleResponse:
+  post:
+    description: This Mule API specification captures the response of an Old Jurisdiction Vehicle Response which is sent by AAMVA NMVTIS via the Mule Routing API.
+    body:
+      application/json:
+        type: !include Datatypes/oldJurisdictionVehicleResponse.raml
+        example: !include Examples/oldJurisdictionVehicleResponse.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/oldJurisdictionVehicleResponse-SF.raml
+            example: !include Examples/oldJurisdictionVehicleResponse-SF.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/AddBrand:
+  post:
+    description: This Mule API specificaion captures the request from API consumer, to perform an add brand operation on AAMVA NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/addBrandRequest.raml
+        example: !include Examples/addBrandRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/BrandInquiry:
+  post:
+    description: This Mule API specificaion captures the request from Mule Experience API which is the consumer here, to perform a used vehicle inquiry.
+    body:
+      application/json:
+        type: !include Datatypes/brandInquiryRequest.raml
+        example: !include Examples/brandInquiryRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/PurgeTitle:
+  post:
+    description: This Mule API specificaion captures the request from Mule Experience API which is the consumer here, to perform a Change Jurisdiction Of Title.
+    body:
+      application/json:
+        type: !include Datatypes/purgeTitleRequest.raml
+        example: !include Examples/purgeTitleRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/RemoveBrand:
+  post:
+    description: This Mule API specificaion captures the request from API consumer, to perform a remove brand operation on AAMVA NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/removeBrandRequest.raml
+        example: !include Examples/removeBrandRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json
+
+/v1/VehicleHistoryInquiry:
+  post:
+    description: This Mule API specificaion captures the request from API consumer to perform a vehicle history inquiry transaction on AAMVA-NMVTIS.
+    body:
+      application/json:
+        type: !include Datatypes/vehicleHistoryInquiryRequest.raml
+        example: !include Examples/vehicleHistoryInquiryRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           type: !include Datatypes/Failure/400Response.raml
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            type: !include Datatypes/Failure/401Response.raml
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+            type: !include Datatypes/Failure/500Response.raml
+            example: !include Examples/Failure/500Response.json
+
+/v1/UndoTransferOrChangeTitle:
+  post:
+    description: This Mule API specificaion captures the request from Mule Experience API which is the consumer here, to perform a Undo In-State Title Transfer.
+    body:
+      application/json:
+        type: !include Datatypes/undoInstateTitleTransferRequest.raml
+        example: !include Examples/undoInstateTitleTransferRequest.json
+    responses:
+      200:
+        body:
+          application/json:
+            type: !include Datatypes/Success/200Response.raml
+            example: !include Examples/Success/200Response.json
+      400:
+        description: Bad Request
+        body:
+          application/json:
+           example: !include Examples/Failure/400Response.json
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            example: !include Examples/Failure/401Response.json
+      500:
+        description: Server Error
+        body:
+          application/json:
+           example: !include Examples/Failure/500Response.json

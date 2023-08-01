@@ -1,0 +1,11 @@
+{
+   "networkControl":{
+      "transactionLocator":"YYMMDDHHMMSS0001A1B2C3D4AA",
+      "transactionOriginator":"D9",
+      "messageOriginator":"D9",
+      "messageDestination":"NMVTIS",
+	  "businessTransactionGUID": "c618b4f2-13b3-11ed-861d-0242ac120002",
+	  "transactionTypeID": "NM01"
+   },
+   "vin":"1HGBH41JXMN109186"
+}

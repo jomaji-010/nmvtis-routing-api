@@ -1,0 +1,25 @@
+{
+    "networkControl": {
+        "transactionOriginator": "K9",
+        "messageOriginator": "K9",
+        "messageDestination": "OO",
+        "transactionLocator": "RDLSL3KPUKWPZ0NOGZJVFW",        "businessTransactionGUID": "c618b4f2-13b3-11ed-861d-0242ac120002",
+	       "transactionTypeID": "NM01"
+    },
+    "vehicleSummary": {
+        "vin": "8UHJIKJ9OKIJUHY78",
+        "makeCode": "PONT",
+        "modelYear": 2022
+    },
+    "odometer": {
+        "reading": "2000",
+        "uomcode": "K"
+    },
+    "titleSummary": {
+        "titleNumber": "TITLE22",
+        "sot": "K9",
+        "titlingKey": "678754"
+    },
+    "titlingDate": "2022-10-02",
+    "titleMcoIndicator": false
+}

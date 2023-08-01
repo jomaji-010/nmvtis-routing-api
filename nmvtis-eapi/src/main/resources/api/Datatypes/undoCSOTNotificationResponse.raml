@@ -1,0 +1,27 @@
+#%RAML 1.0 DataType
+type: object
+additionalProperties: false
+properties:
+  networkControl: 
+    type: object
+    properties:
+      transactionLocator:
+        type: string
+      transactionOriginator:
+        type: string
+      messageOriginator:
+        type: string
+      messageDestination:
+        type: string
+  conversionExceptions?: !include Fragments/conversionException.raml
+  warnings?: !include Fragments/warnings.raml
+  exceptions?: !include Fragments/exceptions.raml
+  vin?: 
+    type: string | nil
+  titleSummary?: !include Fragments/titleSummary.raml
+  isErrorFound?: 
+    type: boolean | nil
+  savedTransactionLocator?:
+    type: string | nil
+  savedTransactionOriginator?:
+    type: string | nil
